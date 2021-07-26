@@ -1,0 +1,22 @@
+general:
+  # stop after 10 simulated seconds
+  stop_time: 10s
+
+network:
+  graph:
+    # use a built-in network graph containing
+    # a single vertex with a bandwidth of 1 Gbit
+    type: 1_gbit_switch
+
+hosts:
+  # a host with the hostname 'server'
+  server:
+    processes:
+    - path: ~/.local/bin/go-server
+      start_time: 3s
+  client:
+    quantity: 1
+    processes:
+    - path: /bin/curl
+      args: -s server
+      start_time: 5s
