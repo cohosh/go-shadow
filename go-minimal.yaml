@@ -11,10 +11,12 @@ network:
 hosts:
   # a host with the hostname 'server'
   server:
+    network_node_id: 0
     processes:
     - path: ./go-server/go-server
       start_time: 3s
   client:
+    network_node_id: 0
     quantity: 1
     processes:
     - path: ./go-client/go-client
