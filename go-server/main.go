@@ -1,19 +1,31 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
+	"log"
+	"net"
 )
 
-type SimpleHandler struct{}
-
-func (h *SimpleHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	data := []byte("Hi, I'm a simple web server\n")
-	w.Write(data)
-}
-
 func main() {
+	addr, err := net.ResolveUDPAddr("udp", ":10001")
+	if err != nil {
+		log.Fatal(err)
+	}
+	l, err := net.ListenUDP("udp", addr)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	handler := &SimpleHandler{}
-	http.ListenAndServe(":80", handler)
+	b := make([]byte, 1024)
+	for {
+		n, _, err := l.ReadFrom(b)
+		if err != nil {
+			fmt.Println("Error: ", err)
+			break
+		}
+		fmt.Println("Received ", string(b[0:n]))
+	}
+
+	fmt.Println("Shut down server")
 
 }

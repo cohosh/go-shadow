@@ -12,11 +12,11 @@ hosts:
   # a host with the hostname 'server'
   server:
     processes:
-    - path: ~/.local/bin/go-server
+    - path: ./go-server/go-server
       start_time: 3s
   client:
     quantity: 1
     processes:
-    - path: /bin/curl
-      args: -s server
+    - path: ./go-client/go-client
+      args: -server server:10001
       start_time: 5s
